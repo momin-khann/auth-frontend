@@ -31,8 +31,8 @@ const navList = [
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const path = location.pathname.split("/");
+  const { pathname } = useLocation();
+  const path = pathname.split("/");
   // const user = useCurrentUser();
 
   return (
@@ -42,7 +42,7 @@ const Navbar = () => {
           <Button
             key={item.id}
             variant={
-              location.pathname === item.linkHref ||
+              pathname === item.linkHref ||
               (path.includes(item.linkHref) && path.length > 2)
                 ? "default"
                 : "ghost"
@@ -59,7 +59,7 @@ const Navbar = () => {
       <DropdownMenu>
         <DropdownMenuTrigger className={"outline-none"}>
           <Avatar>
-            {/*<AvatarImage src={user?.profilePicture} />*/}
+            <AvatarImage src={""} />
 
             <AvatarFallback className={"bg-sky-600"}>
               <FaUser className={"text-white"} />
