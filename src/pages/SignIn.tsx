@@ -35,11 +35,11 @@ const SignIn = () => {
     <CardWrapper
       headerLabel="Welcome Back"
       backButtonLabel={"Don't have an account?"}
-      backButtonHref={"/register"}
+      backButtonHref={"/sign-up"}
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             disabled={isPending}
             control={form.control}

@@ -15,23 +15,24 @@ const navList = [
   {
     id: 1,
     link: "About",
-    linkHref: "/about",
+    linkHref: "/dashboard",
   },
   {
     id: 3,
     link: "Admin",
-    linkHref: "/admin",
+    linkHref: "admin",
   },
   {
     id: 4,
     link: "Settings",
-    linkHref: "/settings",
+    linkHref: "settings",
   },
 ];
 
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const path = location.pathname.split("/");
   // const user = useCurrentUser();
 
   return (
@@ -40,8 +41,14 @@ const Navbar = () => {
         {navList.map((item) => (
           <Button
             key={item.id}
-            variant={location.pathname === item.linkHref ? "default" : "ghost"}
-            onClick={() => navigate(item.link.toLowerCase())}
+            variant={
+              location.pathname === item.linkHref ||
+              (path.includes(item.linkHref) && path.length > 2)
+                ? "default"
+                : "ghost"
+            }
+            // variant={location.pathname === item.linkHref ? "default" : "ghost"}
+            onClick={() => navigate(item.linkHref)}
           >
             {item.link}
           </Button>
