@@ -67,3 +67,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components{
+  .spinner {
+    margin: 3.2rem auto 1.6rem;
+    width: 60px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 7px solid theme("colors.gray.800");
+    border-right-color: theme("colors.gray.300");
+    animation: rotate 1s infinite linear;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}
+
+
+@layer utilities {
+  .bg-blue-gradient {
+    @apply bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800
+  }
+}
