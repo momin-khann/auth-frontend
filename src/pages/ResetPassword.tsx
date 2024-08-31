@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { forgotPassword } from "@/schemas";
 
-const ForgotPassword = () => {
+const ResetPassword = () => {
   const [isPending, startTransition] = useTransition();
 
   // 1. Define your form.
@@ -75,4 +75,4 @@ const ForgotPassword = () => {
     </CardWrapper>
   );
 };
-export default ForgotPassword;
+export default ResetPassword;

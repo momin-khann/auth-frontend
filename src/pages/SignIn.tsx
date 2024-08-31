@@ -13,12 +13,18 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schemas";
-import { z } from "zod";
+import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
+import { authReducer, loginUser } from "@/store/authSlice.ts";
+import { useNavigate } from "react-router-dom";
+import { LoginSchemaType } from "@/types";
 
 const SignIn = () => {
-  const [isPending, startTransition] = useTransition();
+  // const [isPending, startTransition] = useTransition();
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector(authReducer);
+  const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -27,9 +33,13 @@ const SignIn = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginSchema>) {
+  function onSubmit(values: LoginSchemaType) {
     // startTransition( () => {})
+    dispatch(loginUser(values));
+    navigate("/dashboard");
   }
+
+  if (error) <div>Error: {error}</div>;
 
   return (
     <CardWrapper
@@ -41,7 +51,7 @@ const SignIn = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
-            disabled={isPending}
+            disabled={isLoading}
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -56,7 +66,7 @@ const SignIn = () => {
           />
           <div className="">
             <FormField
-              disabled={isPending}
+              disabled={isLoading}
               control={form.control}
               name="password"
               render={({ field }) => (
@@ -74,7 +84,7 @@ const SignIn = () => {
             </Button>
           </div>
 
-          <Button disabled={isPending} type="submit" className={"w-full"}>
+          <Button disabled={isLoading} type="submit" className={"w-full"}>
             Sign In
           </Button>
         </form>

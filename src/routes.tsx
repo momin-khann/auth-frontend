@@ -5,7 +5,7 @@ import SignIn from "@/pages/SignIn.tsx";
 import App from "@/App.tsx";
 import VerifyEmail from "@/pages/VerifyEmail.tsx";
 import SignUp from "@/pages/SignUp.tsx";
-import ForgotPassword from "@/pages/ForgotPassword.tsx";
+import ResetPassword from "@/pages/ResetPassword.tsx";
 import Dashboard from "@/pages/Dashboard.tsx";
 import Admin from "@/pages/Admin.tsx";
 import Settings from "@/pages/Settings.tsx";
@@ -30,8 +30,8 @@ const publicRoutes = [
     element: <SignIn />,
   },
   {
-    path: "forgot-password/:token",
-    element: <ForgotPassword />,
+    path: "reset-password/:token",
+    element: <ResetPassword />,
   },
   /* Catch All Unknown Routes*/
   {
