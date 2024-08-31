@@ -1,8 +1,6 @@
-import React, { useState, useTransition } from "react";
 import CardWrapper from "@/components/wrapper/AuthCardWrapper.tsx";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { registerSchema } from "@/schemas";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +15,12 @@ import { Input } from "@/components/ui/input";
 import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
 import { authReducer, registerUser } from "@/store/authSlice.ts";
 import { RegisterSchemaType } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector(authReducer);
+  const navigate = useNavigate();
 
   // 1. Define your form.
   const form = useForm<RegisterSchemaType>({
@@ -35,6 +35,7 @@ const SignUp = () => {
   // 2. Define a submit handler.
   function onSubmit(values: RegisterSchemaType) {
     dispatch(registerUser(values));
+    navigate("/sign-in");
   }
 
   if (error) <div>Error: {error}</div>;

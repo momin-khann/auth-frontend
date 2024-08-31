@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store.ts";
 import { axios } from "@/lib/axios.ts";
 import { AuthState, LoginSchemaType, RegisterSchemaType, User } from "@/types";

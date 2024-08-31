@@ -1,4 +1,4 @@
-import React, { useTransition } from "react";
+import React from "react";
 import CardWrapper from "@/components/wrapper/AuthCardWrapper.tsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +19,6 @@ import { useNavigate } from "react-router-dom";
 import { LoginSchemaType } from "@/types";
 
 const SignIn = () => {
-  // const [isPending, startTransition] = useTransition();
   const dispatch = useAppDispatch();
   const { isLoading, error } = useAppSelector(authReducer);
   const navigate = useNavigate();
@@ -34,7 +33,6 @@ const SignIn = () => {
 
   // 2. Define a submit handler.
   function onSubmit(values: LoginSchemaType) {
-    // startTransition( () => {})
     dispatch(loginUser(values));
     navigate("/dashboard");
   }
