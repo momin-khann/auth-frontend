@@ -7,7 +7,7 @@ export interface ApiResponse {
 }
 
 export interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   image: string;
@@ -16,11 +16,10 @@ export interface User {
 
 export interface AuthState {
   isLoading: boolean;
-  userInfo: User[];
-  status: "idle" | "pending" | "succeeded" | "rejected";
+  userInfo: User | null;
   error: string | null;
   isAuthenticated: boolean;
-  isCheckingAuth: boolean;
+  authStatus: "idle" | "pending" | "success" | "rejected";
 }
 
 export type RegisterSchemaType = z.infer<typeof registerSchema>;

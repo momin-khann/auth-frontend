@@ -10,6 +10,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import { ExitIcon, GearIcon } from "@radix-ui/react-icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { logout } from "@/store/authSlice.ts";
 
 const navList = [
   {
@@ -30,6 +32,7 @@ const navList = [
 ];
 
 const Navbar = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const path = pathname.split("/");
@@ -76,7 +79,10 @@ const Navbar = () => {
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
-            // onClick={() => logout()}
+            onClick={() => {
+              dispatch(logout());
+              navigate("/");
+            }}
             className={"flex items-center gap-2"}
           >
             <ExitIcon />

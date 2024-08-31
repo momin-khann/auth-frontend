@@ -12,14 +12,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
-import { authReducer, registerUser } from "@/store/authSlice.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { registerUser, useAuth } from "@/store/authSlice.ts";
 import { RegisterSchemaType } from "@/types";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(authReducer);
+  const { isLoading, error } = useAuth();
   const navigate = useNavigate();
 
   // 1. Define your form.
@@ -57,7 +57,11 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="John Doe" {...field} />
+                  <Input
+                    autoComplete={"off"}
+                    placeholder="John Doe"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,7 +75,11 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="john.doe@example.com" {...field} />
+                  <Input
+                    autoComplete={"off"}
+                    placeholder="john.doe@example.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,7 +93,12 @@ const SignUp = () => {
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="******" type="password" {...field} />
+                  <Input
+                    autoComplete={"off"}
+                    placeholder="******"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -10,6 +10,7 @@ import Dashboard from "@/pages/Dashboard.tsx";
 import Admin from "@/pages/Admin.tsx";
 import Settings from "@/pages/Settings.tsx";
 import ProtectedLayout from "@/components/wrapper/ProtectedLayout.tsx";
+import RedirectAuthenticatedUser from "@/components/wrapper/RedirectAuthenticatedUser.tsx";
 
 // Define routes
 const publicRoutes = [
@@ -23,15 +24,27 @@ const publicRoutes = [
   },
   {
     path: "sign-up",
-    element: <SignUp />,
+    element: (
+      <RedirectAuthenticatedUser>
+        <SignUp />
+      </RedirectAuthenticatedUser>
+    ),
   },
   {
     path: "sign-in",
-    element: <SignIn />,
+    element: (
+      <RedirectAuthenticatedUser>
+        <SignIn />
+      </RedirectAuthenticatedUser>
+    ),
   },
   {
     path: "reset-password/:token",
-    element: <ResetPassword />,
+    element: (
+      <RedirectAuthenticatedUser>
+        <ResetPassword />
+      </RedirectAuthenticatedUser>
+    ),
   },
   /* Catch All Unknown Routes*/
   {

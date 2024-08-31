@@ -13,14 +13,14 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schemas";
-import { useAppDispatch, useAppSelector } from "@/store/hooks.ts";
-import { authReducer, loginUser } from "@/store/authSlice.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { loginUser, useAuth } from "@/store/authSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { LoginSchemaType } from "@/types";
 
 const SignIn = () => {
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(authReducer);
+  const { isLoading, error } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm<LoginSchemaType>({
@@ -56,7 +56,11 @@ const SignIn = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="john.doe@example.com" {...field} />
+                  <Input
+                    autoComplete={"off"}
+                    placeholder="john.doe@example.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,7 +75,12 @@ const SignIn = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type="password" {...field} />
+                    <Input
+                      autoComplete={"off"}
+                      placeholder="******"
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
