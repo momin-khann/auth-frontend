@@ -11,7 +11,7 @@ const UserInfo = ({ user }: Props) => {
       <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
         <p className="text-sm font-medium capitalize">ID</p>
         <p className="truncate text-sm max-w-[240px] font-mono p-1 bg-slate-100 rounded-md">
-          {user?.id}
+          {user?._id}
         </p>
       </div>
 

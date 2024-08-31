@@ -1,4 +1,4 @@
-import React, { useTransition } from "react";
+import React from "react";
 import CardWrapper from "@/components/wrapper/AuthCardWrapper.tsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,12 +13,17 @@ import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/schemas";
-import { z } from "zod";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { loginUser, useAuth } from "@/store/authSlice.ts";
+import { useNavigate } from "react-router-dom";
+import { LoginSchemaType } from "@/types";
 
 const SignIn = () => {
-  const [isPending, startTransition] = useTransition();
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAuth();
+  const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+  const form = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
@@ -27,9 +32,12 @@ const SignIn = () => {
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof loginSchema>) {
-    // startTransition( () => {})
+  function onSubmit(values: LoginSchemaType) {
+    dispatch(loginUser(values));
+    navigate("/dashboard");
   }
+
+  if (error) <div>Error: {error}</div>;
 
   return (
     <CardWrapper
@@ -41,14 +49,18 @@ const SignIn = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
-            disabled={isPending}
+            disabled={isLoading}
             control={form.control}
             name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="john.doe@example.com" {...field} />
+                  <Input
+                    autoComplete={"off"}
+                    placeholder="john.doe@example.com"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -56,14 +68,19 @@ const SignIn = () => {
           />
           <div className="">
             <FormField
-              disabled={isPending}
+              disabled={isLoading}
               control={form.control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="******" type="password" {...field} />
+                    <Input
+                      autoComplete={"off"}
+                      placeholder="******"
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,7 +91,7 @@ const SignIn = () => {
             </Button>
           </div>
 
-          <Button disabled={isPending} type="submit" className={"w-full"}>
+          <Button disabled={isLoading} type="submit" className={"w-full"}>
             Sign In
           </Button>
         </form>

@@ -1,11 +1,19 @@
 import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import { checkAuth, useAuth } from "@/store/authSlice.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
+import Loading from "@/components/reusable/Loading.tsx";
 
 function App() {
+  const dispatch = useAppDispatch();
+  const { userInfo, authStatus } = useAuth();
+
   useEffect(() => {
-    // Call Check Auth Function here
+    dispatch(checkAuth());
   }, []);
+
+  if (authStatus === "pending") return <Loading />;
 
   return (
     <>
