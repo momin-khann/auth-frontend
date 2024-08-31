@@ -6,7 +6,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import Social from "@/components/reusable/Social.tsx";
-import Header from "@/components/auth/Header";
+import Header from "@/components/reusable/Header.tsx";
 import { Link } from "react-router-dom";
 
 interface OwnProps {

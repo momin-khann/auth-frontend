@@ -86,7 +86,12 @@ const SignIn = () => {
                 </FormItem>
               )}
             />
-            <Button variant={"link"} type={"button"} className={"p-0 m-0"}>
+            <Button
+              onClick={() => navigate("/forgot-password")}
+              variant={"link"}
+              type={"button"}
+              className={"p-0 m-0"}
+            >
               Forgot Password?
             </Button>
           </div>

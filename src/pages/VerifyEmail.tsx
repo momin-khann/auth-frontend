@@ -48,17 +48,17 @@ const VerifyEmail = () => {
             )}
           />
 
-          <div className={"flex gap-2"}>
+          <div className={"w-full grid grid-cols-2 gap-2"}>
             <Button
               disabled={isPending}
               variant={"outline"}
               type={"button"}
               onClick={handleResendOTP}
-              className={"w-full"}
+              className={"border border-primary"}
             >
               Resend
             </Button>
-            <Button disabled={isPending} type="submit" className={"w-full"}>
+            <Button disabled={isPending} type="submit">
               Verify
             </Button>
           </div>

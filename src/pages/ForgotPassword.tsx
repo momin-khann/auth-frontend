@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { forgotPassword } from "@/schemas";
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
 
   // 1. Define your form.
@@ -24,40 +24,20 @@ const ResetPassword = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof forgotPassword>) {}
 
-  async function handleResendOTP() {
-    // const res = await resendOtp(email);
-    // res.success ? toast.success(res.message) : toast.error(res.message);
-  }
-
   return (
-    <CardWrapper headerLabel="Reset Password">
+    <CardWrapper headerLabel="Forgot Password">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             disabled={isPending}
             control={form.control}
-            name="newPassword"
+            name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>New Password</FormLabel>
-                <FormControl>
-                  <Input placeholder="New Password" type="text" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            disabled={isPending}
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm New Password</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Confirm New Password"
+                    placeholder="Enter Your Email"
                     type="text"
                     {...field}
                   />
@@ -68,11 +48,11 @@ const ResetPassword = () => {
           />
 
           <Button disabled={isPending} type="submit" className={"w-full"}>
-            Set New Password
+            Submit
           </Button>
         </form>
       </Form>
     </CardWrapper>
   );
 };
-export default ResetPassword;
+export default ForgotPassword;

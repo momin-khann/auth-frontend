@@ -26,10 +26,19 @@ export const otpSchema = z.object({
 });
 
 export const forgotPassword = z.object({
-  newPassword: z.string().min(1, {
-    message: "Password is required",
+  email: z.string().email({
+    message: "email is required",
   }),
-  confirmPassword: z.string().min(1, {
-    message: "Password is required",
-  }),
+});
+
+export const accountSchema = z.object({
+  name: z.string().optional(),
+  email: z.string().optional(),
+  role: z.string().optional(),
+  tfa: z.boolean().optional(),
+});
+
+export const passwordSchema = z.object({
+  password: z.string().optional(),
+  confirm_password: z.string().optional(),
 });

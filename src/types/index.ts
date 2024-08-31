@@ -1,5 +1,10 @@
 import { z } from "zod";
-import { loginSchema, registerSchema } from "@/schemas";
+import {
+  accountSchema,
+  loginSchema,
+  passwordSchema,
+  registerSchema,
+} from "@/schemas";
 
 export interface ApiResponse {
   success: boolean;
@@ -22,5 +27,13 @@ export interface AuthState {
   authStatus: "idle" | "pending" | "success" | "rejected";
 }
 
+export interface UserState {
+  isLoading: boolean;
+  userInfo: User | null;
+  error: string | null;
+}
+
 export type RegisterSchemaType = z.infer<typeof registerSchema>;
 export type LoginSchemaType = z.infer<typeof loginSchema>;
+export type AccountSchemaType = z.infer<typeof accountSchema>;
+export type PasswordSchemaType = z.infer<typeof passwordSchema>;

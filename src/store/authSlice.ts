@@ -8,7 +8,7 @@ const registerUser = createAsyncThunk<User, RegisterSchemaType>(
   "sign-up",
   async (formData) => {
     try {
-      const response = await axios.post(`auth/sign-up`, formData);
+      const response = await axios.post(`/auth/sign-up`, formData);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ const loginUser = createAsyncThunk<User, LoginSchemaType>(
   "sign-in",
   async (formData) => {
     try {
-      const { data } = await axios.post(`auth/sign-in`, formData);
+      const { data } = await axios.post(`/auth/sign-in`, formData);
       if (!data) return null;
       return data.data;
     } catch (error) {
@@ -121,9 +121,9 @@ export const authSlice = createSlice({
   },
 });
 
-export const authReducer = (state: RootState) => state.auth;
+export const auth = (state: RootState) => state.auth;
 export { registerUser, loginUser, logout, checkAuth };
 
-export const useAuth = () => useAppSelector(authReducer);
+export const useAuth = () => useAppSelector(auth);
 
 export default authSlice.reducer;
