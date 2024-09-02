@@ -35,7 +35,7 @@ const SignUp = () => {
   // 2. Define a submit handler.
   function onSubmit(values: RegisterSchemaType) {
     dispatch(registerUser(values));
-    navigate("/sign-in");
+    navigate("/verify-email");
   }
 
   if (error) <div>Error: {error}</div>;

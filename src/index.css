@@ -92,3 +92,5 @@
     @apply bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400 to-blue-800
   }
 }
+
+/*background: radial-gradient(  ellipse at top, #38bdf8, #1e40af  );*/
