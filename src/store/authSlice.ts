@@ -1,15 +1,20 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store.ts";
 import { axios } from "@/lib/axios.ts";
-import { AuthState, LoginSchemaType, RegisterSchemaType, User } from "@/types";
+import {
+  AuthState,
+  LoginSchemaType,
+  OtpSchemaType,
+  RegisterSchemaType,
+  User,
+} from "@/types";
 import { useAppSelector } from "@/store/hooks.ts";
 
-const registerUser = createAsyncThunk<User, RegisterSchemaType>(
+const registerUser = createAsyncThunk<unknown, RegisterSchemaType>(
   "sign-up",
   async (formData) => {
     try {
-      const response = await axios.post(`/auth/sign-up`, formData);
-      return response.data;
+      await axios.post(`/auth/sign-up`, formData);
     } catch (error) {
       console.error(error);
     }
@@ -46,6 +51,18 @@ const checkAuth = createAsyncThunk("/check-auth", async () => {
   }
 });
 
+const verifyOtp = createAsyncThunk<any, OtpSchemaType>(
+  "/verify-otp",
+  async (otp) => {
+    try {
+      const { data } = await axios.post("/auth/verify-email", otp);
+      return data.data;
+    } catch (error) {
+      console.error("error: ", error.message);
+    }
+  },
+);
+
 /* Initial State */
 const initialState: AuthState = {
   isLoading: false,
@@ -65,9 +82,8 @@ export const authSlice = createSlice({
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false;
-        state.userInfo = action.payload;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -98,12 +114,11 @@ export const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(logout.rejected, (state) => {
-        state.error = "Error logging out";
         state.isLoading = false;
+        state.error = "Error logging out";
       })
       .addCase(checkAuth.pending, (state) => {
         state.authStatus = "pending";
-        state.error = null;
       })
       .addCase(checkAuth.fulfilled, (state, action) => {
         state.authStatus = "rejected";
@@ -117,12 +132,28 @@ export const authSlice = createSlice({
         state.error = "Error checking auth";
         state.authStatus = "rejected";
         state.isAuthenticated = false;
+      })
+      .addCase(verifyOtp.pending, (state) => {
+        state.isLoading = true;
+        state.authStatus = "pending";
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
+        state.isAuthenticated = true;
+        state.authStatus = "success";
+      })
+      .addCase(verifyOtp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.authStatus = "rejected";
+        state.error = state.error =
+          action.error.message || "error while verification";
       });
   },
 });
 
 export const auth = (state: RootState) => state.auth;
-export { registerUser, loginUser, logout, checkAuth };
+export { registerUser, loginUser, logout, checkAuth, verifyOtp };
 
 export const useAuth = () => useAppSelector(auth);
 

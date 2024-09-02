@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   accountSchema,
   loginSchema,
+  otpSchema,
   passwordSchema,
   registerSchema,
 } from "@/schemas";
@@ -37,3 +38,4 @@ export type RegisterSchemaType = z.infer<typeof registerSchema>;
 export type LoginSchemaType = z.infer<typeof loginSchema>;
 export type AccountSchemaType = z.infer<typeof accountSchema>;
 export type PasswordSchemaType = z.infer<typeof passwordSchema>;
+export type OtpSchemaType = z.infer<typeof otpSchema>;

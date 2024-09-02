@@ -14,27 +14,33 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { otpSchema } from "@/schemas";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { useAuth, verifyOtp } from "@/store/authSlice.ts";
+import { OtpSchemaType } from "@/types";
+import { useNavigate } from "react-router-dom";
 
 const VerifyEmail = () => {
-  const [isPending, startTransition] = useTransition();
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAuth();
+  const navigate = useNavigate();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof otpSchema>>();
+  const form = useForm<OtpSchemaType>();
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof otpSchema>) {}
-
-  async function handleResendOTP() {
-    // const res = await resendOtp(email);
-    // res.success ? toast.success(res.message) : toast.error(res.message);
+  function onSubmit(values: OtpSchemaType) {
+    dispatch(verifyOtp(values));
+    navigate("/dashboard");
   }
+
+  async function handleResendOTP() {}
 
   return (
     <CardWrapper headerLabel="Verify OTP">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
-            disabled={isPending}
+            disabled={isLoading}
             control={form.control}
             name="otp"
             render={({ field }) => (
@@ -50,7 +56,7 @@ const VerifyEmail = () => {
 
           <div className={"w-full grid grid-cols-2 gap-2"}>
             <Button
-              disabled={isPending}
+              disabled={isLoading}
               variant={"outline"}
               type={"button"}
               onClick={handleResendOTP}
@@ -58,7 +64,7 @@ const VerifyEmail = () => {
             >
               Resend
             </Button>
-            <Button disabled={isPending} type="submit">
+            <Button disabled={isLoading} type="submit">
               Verify
             </Button>
           </div>
