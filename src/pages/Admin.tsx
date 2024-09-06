@@ -3,9 +3,12 @@ import CardWrapper from "@/components/wrapper/CardWrapper.tsx";
 import { useAuth } from "@/store/authSlice.ts";
 import FormError from "@/components/reusable/FormError.tsx";
 import FormSuccess from "@/components/reusable/FormSuccess.tsx";
+import LoadingSpinner from "@/components/reusable/LoadingSpinner.tsx";
 
 const Admin = () => {
   const { userInfo } = useAuth();
+
+  if (!userInfo) return <LoadingSpinner />;
 
   if (userInfo.role === "USER") {
     return (

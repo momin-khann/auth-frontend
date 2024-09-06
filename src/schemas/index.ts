@@ -16,7 +16,7 @@ export const registerSchema = z.object({
   email: z.string().email({
     message: "Email is required",
   }),
-  password: z.string().min(1, {
+  password: z.string().min(4, {
     message: "Password is required",
   }),
 });
@@ -28,6 +28,15 @@ export const otpSchema = z.object({
 export const forgotPassword = z.object({
   email: z.string().email({
     message: "email is required",
+  }),
+});
+
+export const resetPassword = z.object({
+  new_password: z.string().min(4, {
+    message: "Password is required",
+  }),
+  confirm_password: z.string().min(4, {
+    message: "Password is required",
   }),
 });
 

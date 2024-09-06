@@ -1,67 +1,18 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "@/store/store.ts";
-import { axios } from "@/lib/axios.ts";
-import {
-  AuthState,
-  LoginSchemaType,
-  OtpSchemaType,
-  RegisterSchemaType,
-  User,
-} from "@/types";
 import { useAppSelector } from "@/store/hooks.ts";
-
-const registerUser = createAsyncThunk<unknown, RegisterSchemaType>(
-  "sign-up",
-  async (formData) => {
-    try {
-      await axios.post(`/auth/sign-up`, formData);
-    } catch (error) {
-      console.error(error);
-    }
-  },
-);
-
-const loginUser = createAsyncThunk<User, LoginSchemaType>(
-  "sign-in",
-  async (formData) => {
-    try {
-      const { data } = await axios.post(`/auth/sign-in`, formData);
-      if (!data) return null;
-      return data.data;
-    } catch (error) {
-      console.error(error);
-    }
-  },
-);
-
-const logout = createAsyncThunk("/sign-out", async () => {
-  try {
-    await axios.post("/auth/sign-out");
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-const checkAuth = createAsyncThunk("/check-auth", async () => {
-  try {
-    const { data } = await axios.get("/auth/check-auth");
-    return data.data;
-  } catch (error) {
-    console.error("error: ", error.message);
-  }
-});
-
-const verifyOtp = createAsyncThunk<any, OtpSchemaType>(
-  "/verify-otp",
-  async (otp) => {
-    try {
-      const { data } = await axios.post("/auth/verify-email", otp);
-      return data.data;
-    } catch (error) {
-      console.error("error: ", error.message);
-    }
-  },
-);
+import { AuthState } from "@/types";
+import {
+  registerUser,
+  loginUser,
+  logout,
+  checkAuth,
+  verifyOtp,
+  forgotPassword,
+  resetPassword,
+  changePassword,
+  updateProfileSettings,
+} from "./authActions";
 
 /* Initial State */
 const initialState: AuthState = {
@@ -148,12 +99,64 @@ export const authSlice = createSlice({
         state.authStatus = "rejected";
         state.error = state.error =
           action.error.message || "error while verification";
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = state.error =
+          action.error.message || "error while verification";
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = state.error =
+          action.error.message || "error while verification";
+      })
+      .addCase(changePassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || "error changing password";
+      })
+      .addCase(updateProfileSettings.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfileSettings.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.userInfo = action.payload;
+      })
+      .addCase(updateProfileSettings.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message || "error updating profile settings";
       });
   },
 });
 
 export const auth = (state: RootState) => state.auth;
-export { registerUser, loginUser, logout, checkAuth, verifyOtp };
+export {
+  registerUser,
+  loginUser,
+  logout,
+  checkAuth,
+  verifyOtp,
+  forgotPassword,
+  resetPassword,
+};
 
 export const useAuth = () => useAppSelector(auth);
 

@@ -11,9 +11,9 @@ const ProtectedLayout = () => {
     return <Navigate to={"/sign-in"} replace />;
   }
 
-  // if (!userInfo.isVerified) {
-  //   return <Navigate to='/verify-email' replace />;
-  // }
+  if (userInfo && !userInfo.isVerified) {
+    return <Navigate to="/verify-email" replace />;
+  }
 
   return (
     <main className="min-h-screen w-full flex flex-col gap-6 items-center justify-center bg-blue-gradient">
