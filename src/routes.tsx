@@ -11,6 +11,7 @@ import Admin from "@/pages/Admin.tsx";
 import Settings from "@/pages/Settings.tsx";
 import ProtectedLayout from "@/components/wrapper/ProtectedLayout.tsx";
 import RedirectAuthenticatedUser from "@/components/wrapper/RedirectAuthenticatedUser.tsx";
+import ResetPassword from "@/pages/ResetPassword.tsx";
 
 // Define routes
 const publicRoutes = [
@@ -43,6 +44,14 @@ const publicRoutes = [
     element: (
       <RedirectAuthenticatedUser>
         <ForgotPassword />
+      </RedirectAuthenticatedUser>
+    ),
+  },
+  {
+    path: "reset-password/:token",
+    element: (
+      <RedirectAuthenticatedUser>
+        <ResetPassword />
       </RedirectAuthenticatedUser>
     ),
   },

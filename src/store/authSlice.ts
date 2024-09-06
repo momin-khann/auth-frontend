@@ -3,9 +3,11 @@ import type { RootState } from "@/store/store.ts";
 import { axios } from "@/lib/axios.ts";
 import {
   AuthState,
+  ForgotSchemaType,
   LoginSchemaType,
   OtpSchemaType,
   RegisterSchemaType,
+  ResetSchemaType,
   User,
 } from "@/types";
 import { useAppSelector } from "@/store/hooks.ts";
@@ -51,12 +53,37 @@ const checkAuth = createAsyncThunk("/check-auth", async () => {
   }
 });
 
-const verifyOtp = createAsyncThunk<any, OtpSchemaType>(
+const verifyOtp = createAsyncThunk<User, OtpSchemaType>(
   "/verify-otp",
   async (otp) => {
     try {
       const { data } = await axios.post("/auth/verify-email", otp);
       return data.data;
+    } catch (error) {
+      console.error("error: ", error.message);
+    }
+  },
+);
+
+const forgotPassword = createAsyncThunk<unknown, ForgotSchemaType>(
+  "/forgot-password",
+  async (email) => {
+    try {
+      await axios.post("/auth/forgot-password", email);
+    } catch (error) {
+      console.error("error: ", error.message);
+    }
+  },
+);
+
+const resetPassword = createAsyncThunk<unknown, any>(
+  "/reset-password",
+  async (formData) => {
+    const { token, new_password } = formData;
+    try {
+      const { data } = await axios.post(`/auth/reset-password/${token}`, {
+        new_password,
+      });
     } catch (error) {
       console.error("error: ", error.message);
     }
@@ -148,12 +175,42 @@ export const authSlice = createSlice({
         state.authStatus = "rejected";
         state.error = state.error =
           action.error.message || "error while verification";
+      })
+      .addCase(forgotPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(forgotPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = state.error =
+          action.error.message || "error while verification";
+      })
+      .addCase(resetPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(resetPassword.fulfilled, (state) => {
+        state.isLoading = false;
+      })
+      .addCase(resetPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = state.error =
+          action.error.message || "error while verification";
       });
   },
 });
 
 export const auth = (state: RootState) => state.auth;
-export { registerUser, loginUser, logout, checkAuth, verifyOtp };
+export {
+  registerUser,
+  loginUser,
+  logout,
+  checkAuth,
+  verifyOtp,
+  forgotPassword,
+  resetPassword,
+};
 
 export const useAuth = () => useAppSelector(auth);
 

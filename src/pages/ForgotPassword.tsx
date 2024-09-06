@@ -1,7 +1,6 @@
-import React, { useTransition } from "react";
+import React from "react";
 import CardWrapper from "@/components/wrapper/AuthCardWrapper.tsx";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -12,24 +11,28 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { forgotPassword } from "@/schemas";
+import { forgotPassword, useAuth } from "@/store/authSlice.ts";
+import { ForgotSchemaType } from "@/types";
+import { useAppDispatch } from "@/store/hooks.ts";
 
 const ForgotPassword = () => {
-  const [isPending, startTransition] = useTransition();
+  const dispatch = useAppDispatch();
+  const { isLoading } = useAuth();
 
   // 1. Define your form.
-  const form = useForm<z.infer<typeof forgotPassword>>();
+  const form = useForm<ForgotSchemaType>();
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof forgotPassword>) {}
+  async function onSubmit(email: ForgotSchemaType) {
+    dispatch(forgotPassword(email));
+  }
 
   return (
     <CardWrapper headerLabel="Forgot Password">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
-            disabled={isPending}
+            disabled={isLoading}
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -47,7 +50,7 @@ const ForgotPassword = () => {
             )}
           />
 
-          <Button disabled={isPending} type="submit" className={"w-full"}>
+          <Button disabled={isLoading} type="submit" className={"w-full"}>
             Submit
           </Button>
         </form>
