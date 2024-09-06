@@ -20,6 +20,7 @@ export interface User {
   email: string;
   image: string;
   role: string;
+  isVerified: boolean;
 }
 
 export interface AuthState {
@@ -34,6 +35,11 @@ export interface UserState {
   isLoading: boolean;
   userInfo: User | null;
   error: string | null;
+}
+
+export interface ResetPasswordType {
+  token: string;
+  new_password: string;
 }
 
 export type RegisterSchemaType = z.infer<typeof registerSchema>;

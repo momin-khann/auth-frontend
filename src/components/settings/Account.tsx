@@ -23,9 +23,12 @@ import {
   SelectValue,
 } from "@/components/ui/select.tsx";
 import { useAuth } from "@/store/authSlice.ts";
+import LoadingSpinner from "@/components/reusable/LoadingSpinner.tsx";
 
 const Account = () => {
   const { userInfo } = useAuth();
+
+  if (!userInfo) return <LoadingSpinner />;
 
   const form = useForm<AccountSchemaType>({
     resolver: zodResolver(accountSchema),
