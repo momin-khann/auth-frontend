@@ -42,6 +42,11 @@ export interface ResetPasswordType {
   new_password: string;
 }
 
+export interface ChangePasswordType {
+  id: string;
+  new_password: string;
+}
+
 export type RegisterSchemaType = z.infer<typeof registerSchema>;
 export type LoginSchemaType = z.infer<typeof loginSchema>;
 export type AccountSchemaType = z.infer<typeof accountSchema>;

@@ -16,6 +16,8 @@ import { useAppDispatch } from "@/store/hooks.ts";
 import { registerUser, useAuth } from "@/store/authSlice.ts";
 import { RegisterSchemaType } from "@/types";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
@@ -35,10 +37,17 @@ const SignUp = () => {
   // 2. Define a submit handler.
   function onSubmit(values: RegisterSchemaType) {
     dispatch(registerUser(values));
-    navigate("/verify-email");
   }
 
-  if (error) <div>Error: {error}</div>;
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+
+    if (!isLoading && !error) {
+      navigate("/verify-email");
+    }
+  }, [error, isLoading]);
 
   return (
     <CardWrapper
@@ -50,7 +59,7 @@ const SignUp = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
-            disabled={isLoading}
+            // disabled={isLoading}
             control={form.control}
             name="name"
             render={({ field }) => (
@@ -68,7 +77,7 @@ const SignUp = () => {
             )}
           />
           <FormField
-            disabled={isLoading}
+            // disabled={isLoading}
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -86,7 +95,7 @@ const SignUp = () => {
             )}
           />
           <FormField
-            disabled={isLoading}
+            // disabled={isLoading}
             control={form.control}
             name="password"
             render={({ field }) => (

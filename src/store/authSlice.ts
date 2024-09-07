@@ -35,10 +35,11 @@ export const authSlice = createSlice({
       })
       .addCase(registerUser.fulfilled, (state) => {
         state.isLoading = false;
+        state.error = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || "Error signing up";
+        state.error = (action.payload as string) || "Error signing up";
       })
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
@@ -47,12 +48,12 @@ export const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
-        state.error = null;
         state.userInfo = action.payload;
+        state.error = null;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error.message || "Error logging in";
+        state.error = (action.payload as string) || "Error logging in";
       })
       .addCase(logout.pending, (state) => {
         state.isLoading = true;

@@ -13,18 +13,33 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PasswordSchemaType } from "@/types";
 import { passwordSchema } from "@/schemas";
+import { useAuth } from "@/store/authSlice.ts";
+import { useAppDispatch } from "@/store/hooks.ts";
+import { changePassword } from "@/store/authActions.ts";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const Password = () => {
+  const dispatch = useAppDispatch();
+  const { userInfo } = useAuth();
+  const navigate = useNavigate();
+
   const form = useForm<PasswordSchemaType>({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      password: "",
+      new_password: "",
       confirm_password: "",
     },
   });
 
-  function onSubmit(data: PasswordSchemaType) {
-    console.log(data);
+  function onSubmit({ new_password, confirm_password }: PasswordSchemaType) {
+    if (new_password !== confirm_password) {
+      toast.error("passwords are not same");
+      return;
+    }
+
+    dispatch(changePassword({ new_password, id: userInfo._id }));
+    navigate("/dashboard");
   }
 
   return (
@@ -33,14 +48,14 @@ const Password = () => {
         <FormField
           // disabled={isLoading}
           control={form.control}
-          name="password"
+          name="new_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>New Password</FormLabel>
               <FormControl>
                 <Input
                   autoComplete={"off"}
-                  placeholder="Password"
+                  placeholder="New Password"
                   type="password"
                   {...field}
                 />
@@ -55,7 +70,7 @@ const Password = () => {
           name="confirm_password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>New Password</FormLabel>
+              <FormLabel>Confirm Password</FormLabel>
               <FormControl>
                 <Input
                   autoComplete={"off"}

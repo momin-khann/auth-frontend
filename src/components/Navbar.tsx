@@ -73,7 +73,7 @@ const Navbar = () => {
         {/* Dropdown Content */}
         <DropdownMenuContent className="mt-1 p-2">
           <DropdownMenuItem>
-            <Link to={"/settings"} className={"flex items-center gap-2"}>
+            <Link to={"settings"} className={"flex items-center gap-2"}>
               <GearIcon />
               Settings
             </Link>

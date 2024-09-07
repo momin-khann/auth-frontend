@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CardWrapper from "@/components/wrapper/AuthCardWrapper.tsx";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +17,12 @@ import { useAppDispatch } from "@/store/hooks.ts";
 import { loginUser, useAuth } from "@/store/authSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { LoginSchemaType } from "@/types";
+import toast from "react-hot-toast";
+import LoadingSpinner from "@/components/reusable/LoadingSpinner.tsx";
 
 const SignIn = () => {
+  const { isLoading, error, isAuthenticated, userInfo } = useAuth();
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm<LoginSchemaType>({
@@ -31,13 +33,20 @@ const SignIn = () => {
     },
   });
 
-  // 2. Define a submit handler.
   function onSubmit(values: LoginSchemaType) {
     dispatch(loginUser(values));
-    navigate("/dashboard");
   }
 
-  if (error) <div>Error: {error}</div>;
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+
+    if (isAuthenticated && userInfo) {
+      toast.success("Login successful");
+      navigate("/dashboard");
+    }
+  }, [error, isAuthenticated, userInfo]);
 
   return (
     <CardWrapper
@@ -49,7 +58,7 @@ const SignIn = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
-            disabled={isLoading}
+            // disabled={isLoading}
             control={form.control}
             name="email"
             render={({ field }) => (
@@ -68,7 +77,7 @@ const SignIn = () => {
           />
           <div className="">
             <FormField
-              disabled={isLoading}
+              // disabled={isLoading}
               control={form.control}
               name="password"
               render={({ field }) => (

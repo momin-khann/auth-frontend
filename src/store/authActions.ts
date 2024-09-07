@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  ChangePasswordType,
   ForgotSchemaType,
   LoginSchemaType,
   OtpSchemaType,
@@ -12,24 +13,23 @@ import { axios } from "@/lib/axios.ts";
 
 export const registerUser = createAsyncThunk<unknown, RegisterSchemaType>(
   "sign-up",
-  async (formData) => {
+  async (formData, { rejectWithValue }) => {
     try {
       await axios.post(`/auth/sign-up`, formData);
     } catch (error) {
-      console.error(error);
+      return rejectWithValue(error.response?.data?.errorMessage);
     }
   },
 );
 
 export const loginUser = createAsyncThunk<User, LoginSchemaType>(
   "sign-in",
-  async (formData) => {
+  async (formData, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(`/auth/sign-in`, formData);
-      if (!data) return null;
       return data.data;
     } catch (error) {
-      console.error(error);
+      return rejectWithValue(error.response?.data?.errorMessage);
     }
   },
 );
@@ -88,11 +88,14 @@ export const resetPassword = createAsyncThunk<unknown, ResetPasswordType>(
   },
 );
 
-export const changePassword = createAsyncThunk<User, PasswordSchemaType>(
+export const changePassword = createAsyncThunk<User, ChangePasswordType>(
   "/change-password",
   async (formData) => {
+    const { id, new_password } = formData;
     try {
-      const { data } = await axios.post("/user/change-password");
+      const { data } = await axios.post(`/user/change-password/${id}`, {
+        new_password,
+      });
       return data.data;
     } catch (error) {
       console.error("error: ", error.message);

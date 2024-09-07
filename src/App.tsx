@@ -7,7 +7,7 @@ import Loading from "@/components/reusable/Loading.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { userInfo, authStatus } = useAuth();
+  const { authStatus } = useAuth();
 
   useEffect(() => {
     dispatch(checkAuth());

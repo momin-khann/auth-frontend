@@ -48,6 +48,10 @@ export const accountSchema = z.object({
 });
 
 export const passwordSchema = z.object({
-  password: z.string().optional(),
-  confirm_password: z.string().optional(),
+  new_password: z.string().min(4, {
+    message: "Password is required",
+  }),
+  confirm_password: z.string().min(4, {
+    message: "Password is required",
+  }),
 });
